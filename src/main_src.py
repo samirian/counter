@@ -1,4 +1,5 @@
 import csv
+import os
 
 #p.csv constants#
 P_ID        = 'p_id'
@@ -34,9 +35,18 @@ def sort_list(list):
     '''
     return sorted(list, key=lambda l:l[0])
 
+#get absolute paths of the files
+p_directory     = os.path.join(os.getcwd(), '..', 'input', 'p.csv' )
+o_directory     = os.path.join(os.getcwd(), '..', 'input', 'o.csv' )
+out_directory   = os.path.join(os.getcwd(), '..', 'output', 'o.csv' )
+
+#delete the old out.csv file if exists
+if os.path.exists(out_directory):
+  os.remove(out_directory)
+
 dep_id_list = []
 #read p.csv file
-p_csv_file = open('p.csv', newline='')
+p_csv_file = open(p_directory, newline='')
 p_reader = csv.DictReader(p_csv_file)
 for row in p_reader:
     #get list of dep_id alng with tot
@@ -49,7 +59,7 @@ for row in p_reader:
         dep_id_list[get_index(dep_id_list, dep_id)][1] += 1
 
 #create out.csv
-out_csv_file = open('out.csv', 'w', newline='')
+out_csv_file = open(out_directory, 'w', newline='')
 fieldnames = [DEP_ID, TOT, NUM_FIRST, PERCENT]
 writer = csv.DictWriter(out_csv_file, fieldnames=fieldnames)
 #write the first coulmn names
@@ -61,13 +71,13 @@ dep_id_list = sort_list(dep_id_list)
 for dep_id in dep_id_list:
     #for each dep_id search p.csv for p_id
     num_first = 0
-    p_csv_file = open('p.csv', newline='')
+    p_csv_file = open(p_directory, newline='')
     p_reader = csv.DictReader(p_csv_file)
     for p_row in p_reader:
         if int(p_row[DEP_ID]) == dep_id[0]:
             p_id = int(p_row[P_ID])
             #for each p_id search o.csv for reordered values
-            o_csv_file = open('o.csv', newline='')
+            o_csv_file = open(o_directory, newline='')
             o_reader = csv.DictReader(o_csv_file)
             for o_row in o_reader:
                 if int(o_row[P_ID]) == p_id:
@@ -88,7 +98,7 @@ for dep_id in dep_id_list:
 
 out_csv_file.close()
 
-out_csv_file = open('out.csv', newline='')
+out_csv_file = open(out_directory, newline='')
 out_reader = csv.DictReader(out_csv_file)
 
 #print field names

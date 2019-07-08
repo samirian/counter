@@ -1,5 +1,6 @@
 import csv
 import os
+from sys import argv
 
 #p.csv constants#
 P_ID        = 'p_id'
@@ -36,9 +37,9 @@ def sort_list(list):
     return sorted(list, key=lambda l:l[0])
 
 #get absolute paths of the files
-p_directory     = os.path.join(os.getcwd(), '..', 'input', 'p.csv' )
-o_directory     = os.path.join(os.getcwd(), '..', 'input', 'o.csv' )
-out_directory   = os.path.join(os.getcwd(), '..', 'output', 'o.csv' )
+p_directory     = os.path.join(os.getcwd(), '..', 'input', argv[1] ) #p.csv
+o_directory     = os.path.join(os.getcwd(), '..', 'input', argv[2] ) #o.csv
+out_directory   = os.path.join(os.getcwd(), '..', 'output', argv[3] )#o.csv
 
 #delete the old out.csv file if exists
 if os.path.exists(out_directory):
